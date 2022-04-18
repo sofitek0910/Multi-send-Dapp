@@ -33,7 +33,7 @@ export default function SuccessModal({action,show}) {
             
               <Button onClick={() => action()}  variant="contained"> Confirm </Button>
               
-              </div>
+            </div>
           </div>
         </Box>
       </Modal>

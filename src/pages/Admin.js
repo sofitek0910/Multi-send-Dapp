@@ -97,7 +97,7 @@ const Admin = () => {
   }, [account])
 
   useEffect(() =>{
-    if(networks.length != 0) {
+    if(networks != null && networks.length != 0) {
       setNetwork(providerChainId);
       if(!networks[providerChainId]) {
         alert("You din't deploy muti-contract yet");
@@ -229,22 +229,28 @@ const Admin = () => {
         <Row>
         <FormControl>
             <InputLabel id="net">Select Chain</InputLabel>
-            <Select
-              labelId="net"
-              id="net"
-              value={network}
-              onChange={handleChangeChain}
-              autoWidth={true}
-              label="Select Chain"
-            >
-              {Object.values(networks).map((net, index) => {
-                return (
-                  <MenuItem value={net.chainId} key={index}>
-                    {net.name} <Button onClick = {(e) =>removeChain(e,net.chainId)}><Delete /></Button>
-                  </MenuItem>
-                )
-              })}
-            </Select>
+            {networks != null?
+              <Select
+                labelId="net"
+                id="net"
+                value={network}
+                onChange={handleChangeChain}
+                autoWidth={true}
+                label="Select Chain"
+              >
+                {Object.values(networks).map((net, index) => {
+                  return (
+                    <MenuItem value={net.chainId} key={index}>
+                      {net.name} <Button onClick = {(e) =>removeChain(e,net.chainId)}><Delete /></Button>
+                    </MenuItem>
+                  )
+                })}
+              </Select>:
+              <Select>
+                <MenuItem value="No chain">No Chain</MenuItem>
+              </Select>
+            }
+            
           </FormControl>
           <Button variant="contained" onClick={handleNetAdd}>
             Add NetWork

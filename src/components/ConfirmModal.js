@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
 const style = {
@@ -28,12 +27,12 @@ export default function ConfirmModal({action,show}) {
         <Box sx={style}>
 
           <div style={{display:'flex',justifyContent:'center',alignItems:'center',marginBottom:'20px',width:'100%',height:'100%',flexDirection:'column',padding:"20px 0px"}}>
-            Do you remove this Chain ?
+            Are you really going to remove this Chain?
             <div style={{display:'flex',flexDirection:'row',justifyContent:'space-around',width:'100%',marginTop:'20px'}}>
             
               <Button onClick={() => action(true)}  variant="contained"> Confirm </Button>
               <Button onClick={() => action(false)}  variant="contained"> Cancel </Button>
-              </div>
+            </div>
           </div>
         </Box>
       </Modal>
