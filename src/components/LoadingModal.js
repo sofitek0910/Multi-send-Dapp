@@ -27,10 +27,9 @@ export default function LoadingModal({isloading,content}) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-
           <div style={{display:'flex',justifyContent:'center',alignItems:'center',width:'100%',height:'100%',flexDirection:'column'}}>
             <img src="assets/images/loading.gif" width={'120px'}/>
-                <div>{content}...</div>
+            <div>{content}...</div>
           </div>
         </Box>
       </Modal>
