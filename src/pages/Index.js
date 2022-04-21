@@ -21,13 +21,15 @@ import { DappContext } from 'contexts/DappContext'
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
+  background: #212121;
+  colour: white;
   font-family: sans-serif;
 `
 const Header = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  background: blue;
+  background: black;
   padding: 10px 0px;
   color: white;
   font-size: 28px;
@@ -43,8 +45,10 @@ const Body = styled.div`
 `
 const Text = styled.div`
   font-size: 18px;
+  color: white;
   @media (max-width: 768px) {
     font-size: 12px;
+    color: white;
   }
 `
 
@@ -60,7 +64,7 @@ const Row = styled.div`
 
 const UploadButton = styled.div`
   color: white;
-  background: #1976d2;
+  background: #ffa319;
   padding: 10px;
   border-radius: 4px;
   width: fit-content;
@@ -278,10 +282,10 @@ const Index = () => {
     <Container>
       <React.Fragment>
         <Header>
-          <div>Muti Sender</div>
+          <div>MultiSendApp</div>
         </Header>
         <AdminButtonContainer>
-          <Link to="/admin">Go to Admin page </Link>
+          <Link to="/admin">... </Link>
         </AdminButtonContainer>
         <Body>
           <Button
@@ -293,13 +297,13 @@ const Index = () => {
             {isConnected ? 'WALLET CONNECTED' : 'CONNECT WALLET'}
           </Button>
           <Text>
-            <div>You wallet Address: {address}</div>
+            <div>Your Wallet Address: {address}</div>
           </Text>
           <Text>
-            <div> Contract Address: {contractAddress}</div>
+            <div> Current Contract Address: {contractAddress}</div>
           </Text>
           <Text>
-            <div> Fee Amount : {txFee}</div>
+            <div> Current Fee Being Charged : {txFee}</div>
           </Text>
 
           {/* <Text>Balance: {balance} Ether</Text> */}
@@ -311,7 +315,7 @@ const Index = () => {
               autoWidth={true}
             >
               <MenuItem value={'Native Coin'}>Native Coin</MenuItem>
-              <MenuItem value={'Custom token'}>Costom token</MenuItem>
+              <MenuItem value={'Custom token'}>Custom token</MenuItem>
             </Select>
             <TextField
               label="Token Address"
@@ -355,7 +359,7 @@ const Index = () => {
 
           <textarea
             placeholder="address amount"
-            style={{ width: '80%', fontSize: '12px' }}
+            style={{ width: '45%', fontSize: '14px' }}
             rows={10}
             onChange={changeDataList}
             multiline
@@ -369,7 +373,7 @@ const Index = () => {
 
             <React.Fragment>
               <label htmlFor="fileUpload">
-                <UploadButton>Click to Upload</UploadButton>
+                <UploadButton>Upload CSV file</UploadButton>
               </label>
               <input
                 id="fileUpload"
