@@ -4,7 +4,6 @@ import db from 'firebaseConfig/config'
 import { ref, onValue } from 'firebase/database'
 import { Web3Context } from 'contexts/Web3Context'
 import Web3 from 'web3'
-import { Web } from '@mui/icons-material'
 import { networkCurrencies, networkNames, chainUrls } from 'lib/constants'
 
 const DataBase = ref(db)
@@ -30,7 +29,6 @@ export const DappContextProvider = ({ children }) => {
       console.log('contract address', contractAddress);
       let newContract = new web3.eth.Contract(MultisenderABI.abi, contractAddress);
       setMultiSendContract(newContract);
-
     }
     
   }, [providerChainId, networks])
@@ -39,9 +37,7 @@ export const DappContextProvider = ({ children }) => {
       
     for (let item in networks)
     {
-     
       if (item) {
-
         const itemContent = networks[item];
         Object.assign(networkCurrencies, {[itemContent.chainId] : {name :  itemContent.name, symbol : itemContent.symbol}})
         Object.assign(networkNames, {[itemContent.chainId] : itemContent.name});
@@ -54,9 +50,7 @@ export const DappContextProvider = ({ children }) => {
         Object.assign(chainUrls, {[itemContent.chainId] : rpcEndpoint});
       }
     }
-    console.log('constants in proejct', networkCurrencies, networkNames, chainUrls);
   }, [networks])
-
 
   const updateNetworks = () => {
     const networkRef = ref(db, '/networks')
