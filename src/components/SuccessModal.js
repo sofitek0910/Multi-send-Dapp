@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
 const style = {
@@ -25,10 +26,13 @@ export default function SuccessModal({action,show}) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+
           <div style={{display:'flex',justifyContent:'center',alignItems:'center',marginBottom:'20px',width:'100%',height:'100%',flexDirection:'column',padding:"20px 0px"}}>
             Added now Chain.
             <div style={{display:'flex',flexDirection:'row',justifyContent:'space-around',width:'100%',marginTop:'20px'}}>
+            
               <Button onClick={() => action()}  variant="contained"> Confirm </Button>
+              
             </div>
           </div>
         </Box>

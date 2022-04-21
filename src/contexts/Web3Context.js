@@ -1,6 +1,7 @@
 import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
-
+// import coinbaseLogo from 'assets/coinbase.svg';
+// import imTokenLogo from 'assets/imtoken.svg';
 import { ethers } from 'ethers';
 import {
   getNetworkName,
@@ -38,6 +39,11 @@ const updateTitle = chainId => {
 };
 
 const rpc = {
+//   1: getRPCUrl(1),
+//   42: getRPCUrl(42),
+//   100: getRPCUrl(100),
+//   77: getRPCUrl(77),
+  // 56: getRPCUrl(56),
   97 : getRPCUrl(97)
 };
 
@@ -52,6 +58,36 @@ const providerOptions = {
     package: WalletConnectProvider,
     options: { rpc },
   },
+//   'custom-imToken': {
+//     display: {
+//     //   logo: imTokenLogo,
+//       name: 'imToken',
+//       description: 'Connect to your imToken Wallet',
+//     },
+//     package: WalletConnectProvider,
+//     options: { rpc },
+//     connector,
+//   },
+//   'custom-walletlink': {
+//     display: {
+//     //   logo: coinbaseLogo,
+//       name: 'Coinbase',
+//       description: 'Scan with Coinbase Wallet to connect',
+//     },
+//     options: {
+//       appName: 'OmniBridge',
+//     },
+//     package: WalletLink,
+//     connector: async (WalletLinkPackage, options) => {
+//       const { appName } = options;
+//       const walletLink = new WalletLinkPackage({
+//         appName,
+//       });
+//       const provider = walletLink.makeWeb3Provider({}, 0);
+//       await provider.enable();
+//       return provider;
+//     },
+//   },
 };
 
 const web3Modal = new Web3Modal({

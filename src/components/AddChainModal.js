@@ -1,11 +1,21 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import Modal from '@mui/material/Modal'
 import { DappContext } from 'contexts/DappContext'
 import db from 'firebaseConfig/config'
-import { getDatabase, ref, set, onValue, update } from "firebase/database";
+import { getDatabase, ref, set ,onValue, update} from "firebase/database";
+
+
+
+
+// onValue(starCountRef, (res) => {
+//   const data = res.val();
+//   console.log(data)
+// });
+
 
 const style = {
   position: 'absolute',
@@ -22,8 +32,8 @@ export default function AddChainModal() {
   const [netInfo, setNetInfo] = React.useState({})
   const [netName,setNetName] = React.useState('');
   const { open, setOpen } = React.useContext(DappContext)
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+  const handleOpen = () => React.setOpen(true)
+  const handleClose = () => React.setOpen(false)
   const {updateNetworks, setAdded} = React.useContext(DappContext)
 
   const AddChain = () => {
