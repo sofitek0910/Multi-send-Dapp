@@ -232,6 +232,7 @@ const Admin = () => {
         <FormControl>
             {networks != null?
               <Select
+                style={{backgroundColor: "#fff"}}
                 id="net"
                 value={network}
                 onChange={handleChangeChain}

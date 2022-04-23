@@ -349,6 +349,7 @@ const Index = () => {
           {/* <Text>Balance: {balance} Ether</Text> */}
           <Row>
             <Select
+              style={{backgroundColor: "#fff"}}
               value={coinType}
               onChange={handleChange}
               defaultValue={coinType}
