@@ -359,6 +359,7 @@ const Index = () => {
               <MenuItem value={'Custom token'}>Custom token</MenuItem>
             </Select>
             <TextField
+              style={{backgroundColor: "#fff"}}
               label="Token Address"
               style={{ width: '50%' }}
               value={tokenAddress}
@@ -376,6 +377,7 @@ const Index = () => {
 
           <FormControl style={{marginTop: '10px'}}>
             <Select
+              style={{backgroundColor: "#fff"}}
               id="demo-simple-select"
               value={network}
               onChange={handleChangeChain}
