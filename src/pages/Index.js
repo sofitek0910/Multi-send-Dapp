@@ -359,9 +359,8 @@ const Index = () => {
               <MenuItem value={'Custom token'}>Custom token</MenuItem>
             </Select>
             <TextField
-              style={{backgroundColor: "#fff"}}
               label="Token Address"
-              style={{ width: '50%' }}
+              style={{ width: '50%', backgroundColor: "#fff" }}
               value={tokenAddress}
               disabled={coinType === 'Native Coin' ? true : false}
               onChange={getTokenAddress}
