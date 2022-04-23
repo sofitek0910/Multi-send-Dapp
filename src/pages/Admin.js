@@ -7,30 +7,31 @@ import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import MultisenderABI from 'abi/muti.json'
 import LoadingModal from 'components/LoadingModal'
 import { Link } from 'react-router-dom'
 import AddChainModal from 'components/AddChainModal'
-import InputLabel from '@mui/material/InputLabel';
+import EditChainModal from 'components/EditChainModal'
 import FormControl from '@mui/material/FormControl';
 import { DappContext } from 'contexts/DappContext'
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { Delete } from '@mui/icons-material'
+import EditIcon from '@mui/icons-material/Edit';
 import { remove,ref } from "firebase/database";
 import db from 'firebaseConfig/config'
 import ConfirmModal from '../components/ConfirmModal'
 import SuccessModal from 'components/SuccessModal'
+import ChangeSuccessModal from 'components/ChangeSuccessModal'
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
+  background: #333333;
+  colour: white;
   font-family: sans-serif;
 `
 const Header = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  background: blue;
+  background: #000;
   padding: 10px 0px;
   color: white;
   font-size: 28px;
@@ -46,6 +47,7 @@ const Body = styled.div`
 `
 const Text = styled.div`
   font-size: 18px;
+  color: #fff;
   @media (max-width: 768px) {
     font-size: 12px;
   }
@@ -61,16 +63,6 @@ const Row = styled.div`
   }
 `
 
-const UploadButton = styled.div`
-  color: white;
-  background: #1976d2;
-  padding: 10px;
-  border-radius: 4px;
-  width: fit-content;
-  font-size: 18px;
-  cursor: pointer;
-`
-
 const web3 = new Web3(window.ethereum)
 
 const Admin = () => {
@@ -83,9 +75,8 @@ const Admin = () => {
   const [fee, setFee] = useState()
   const [isSending, setIsSendding] = useState(false)
   const { connectWeb3, providerChainId, account } = useContext(Web3Context)
-  const { networks, setOpen,multiSendContract,added,setAdded} = useContext(DappContext)
+  const { networks, setOpen, multiSendContract, added, setAdded, updated, setUpdated, setEditShow, selectedId, setSelectedId, readNetwork } = useContext(DappContext)
   const [show,setShow] =  useState(false);
-  const [delId,setDelId] =  useState();
   const switchChain = useSwitchChain();
 
 
@@ -191,13 +182,21 @@ const Admin = () => {
   const removeChain = (e,chainId) => {
     e.stopPropagation();
     setShow(true);
-    setDelId(chainId)
+    setSelectedId(chainId)
+  
+    //remove(ref(db,'/networks/' + chainId )).then(()=> console.log('deleted'));
+  }
+  const editChain = (e,chainId) => {
+    console.log("chain->", chainId)
+    e.stopPropagation();
+    setEditShow(true);
+    readNetwork(chainId)
   
     //remove(ref(db,'/networks/' + chainId )).then(()=> console.log('deleted'));
   }
   const handleConfirm = (state) =>{
       if (state) {
-          remove(ref(db,'/networks/' + delId )).then(()=> console.log('deleted'));
+          remove(ref(db,'/networks/' + selectedId )).then(()=> console.log('deleted'));
           setShow(false)
       }
       else {
@@ -207,13 +206,16 @@ const Admin = () => {
   const handleSuccess = () =>{
     setAdded(false)
   }
+  const handleUpdate = () =>{
+    setUpdated(false)
+  }
   
   return (
     <Container>
       <Header>
         <div>Muti Sender Admin</div>
       </Header>
-      <Link to="/">Go to Sending Page</Link>
+      <Link style={{color: '#fff'}} to="/">Go to Sending Page</Link>
       <Body>
         <Button
           onClick={connectWallet}
@@ -228,20 +230,19 @@ const Admin = () => {
         </Text>
         <Row>
         <FormControl>
-            <InputLabel id="net">Select Chain</InputLabel>
             {networks != null?
               <Select
-                labelId="net"
                 id="net"
                 value={network}
                 onChange={handleChangeChain}
                 autoWidth={true}
-                label="Select Chain"
               >
                 {Object.values(networks).map((net, index) => {
                   return (
                     <MenuItem value={net.chainId} key={index}>
-                      {net.name} <Button onClick = {(e) =>removeChain(e,net.chainId)}><Delete /></Button>
+                      {net.name} 
+                      <Button onClick = {(e) => removeChain(e,net.chainId)}><Delete /></Button>
+                      <Button onClick = {(e) => editChain(e,net.chainId)}><EditIcon /></Button>
                     </MenuItem>
                   )
                 })}
@@ -251,17 +252,17 @@ const Admin = () => {
               </Select>
             }
           </FormControl>
-          <Button variant="contained" onClick={handleNetAdd}>
+          <Button style={{backgroundColor: 'purple'}} variant="contained" onClick={handleNetAdd}>
             Add NetWork
           </Button>
         </Row>
         <div style={{color:'red'}}>You have to be owner of the contract</div>
         <Row>
-          <div> Owner Address: {contractOwner}</div>
+          <div style={{color: '#fff'}}> Owner Address: {contractOwner}</div>
         </Row>
         <Row>
-          <div> Owner Address:</div>
-          <TextField
+          <div style={{color: '#fff'}}> Owner Address:</div>
+          <input
             label="Owner Address"
             variant="outlined"
             style={{ width: '50%' }}
@@ -269,8 +270,8 @@ const Admin = () => {
           />
         </Row>
         <Row>
-          <div> Fee Address:</div>
-          <TextField
+          <div style={{color: '#fff'}}> Fee Address:</div>
+          <input
             label="Fee Address"
             variant="outlined"
             style={{ width: '50%' }}
@@ -278,31 +279,32 @@ const Admin = () => {
           />
         </Row>
         <Row>
-          <div> Fee amount:</div>
-          <TextField
+          <div style={{color: '#fff'}}> Fee amount:</div>
+          <input
             label="Fee amount"
             variant="outlined"
             style={{ width: '50%' }}
-            placeholder={'0.1'}
             onChange={getFee}
           />
         </Row>
 
         <Row>
-          <Button variant="contained" onClick={changeOwner}>
+          <Button style={{backgroundColor: 'green'}} variant="contained" onClick={changeOwner}>
             Change Owner
           </Button>
           <Button variant="contained" onClick={changeFeeAddress}>
             Change Free Address
           </Button>
-          <Button variant="contained" onClick={changeFee}>
+          <Button style={{backgroundColor: 'orange'}}  variant="contained" onClick={changeFee}>
             Change Fee
           </Button>
         </Row>
       </Body>
       <LoadingModal isloading={isSending} content="Setting" />
       <AddChainModal/>
+      <EditChainModal/>
       <SuccessModal action ={handleSuccess} show={added}/>
+      <ChangeSuccessModal action ={handleUpdate} show={updated}/>
       <ConfirmModal action = {handleConfirm} show={show}/>
     </Container>
   )

@@ -11,11 +11,15 @@ export const DappContext = createContext({})
 
 export const DappContextProvider = ({ children }) => {
   const [open, setOpen] = useState(false)
+  const [editShow, setEditShow] = useState(false)
   const [selectedChainId, setSelectedChainId] = useState(3)
   const [networks, setNetworks] = useState([])
   const { connectWeb3, providerChainId, account } = useContext(Web3Context)
-  const [multiSendContract, setMultiSendContract] = useState();
-  const [added,setAdded] = useState(false);
+  const [multiSendContract, setMultiSendContract] = useState()
+  const [added,setAdded] = useState(false)
+  const [updated,setUpdated] = useState(false)
+  const [selectedId, setSelectedId] = useState()
+  const [selectedNetwork, setSelectedNetwork] = useState({})
   useEffect(() => {
     updateNetworks()
   }, [])
@@ -52,6 +56,11 @@ export const DappContextProvider = ({ children }) => {
     }
   }, [networks])
 
+  const readNetwork = (chainId) => {
+    setSelectedNetwork(networks[chainId])
+    console.log("readnetwork===>", networks[chainId])
+  }
+
   const updateNetworks = () => {
     const networkRef = ref(db, '/networks')
     onValue(networkRef, (result) => {
@@ -63,14 +72,22 @@ export const DappContextProvider = ({ children }) => {
     <DappContext.Provider
       value={{
         updateNetworks,
+        readNetwork,
         networks,
         open,
         setOpen,
+        editShow,
+        setEditShow,
         selectedChainId,
         setSelectedChainId,
+        selectedId,
+        selectedNetwork,
+        setSelectedNetwork,
+        setSelectedId,
         selectedChainId,
         multiSendContract,
-        added,setAdded
+        added,setAdded,
+        updated,setUpdated
       }}
     >
       {children}

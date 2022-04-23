@@ -2,14 +2,14 @@ import { initializeApp } from 'firebase/app';
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAlkF-FiJacgWIjTtGfrWsE45gRwN-yT4w",
-  authDomain: "muti-sender.firebaseapp.com",
-  databaseURL: "https://muti-sender-default-rtdb.firebaseio.com",
-  projectId: "muti-sender",
-  storageBucket: "muti-sender.appspot.com",
-  messagingSenderId: "723770660495",
-  appId: "1:723770660495:web:68ac6547167faa6a8242fa",
-  measurementId: "G-GTX871GXVE"
+  apiKey: "AIzaSyA-oAOMfsktH01V6jFgcelTBZxAQkDBt44",
+  authDomain: "multi-send-dapp.firebaseapp.com",
+  databaseURL: "https://multi-send-dapp-default-rtdb.firebaseio.com",
+  projectId: "multi-send-dapp",
+  storageBucket: "multi-send-dapp.appspot.com",
+  messagingSenderId: "454419980357",
+  appId: "1:454419980357:web:5e5fa5813fae59ce1b432c",
+  measurementId: "G-YW6CSX5P4Z"
 };
 
 const app = initializeApp(firebaseConfig);

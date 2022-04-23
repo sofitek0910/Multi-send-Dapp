@@ -7,21 +7,14 @@ import MenuItem from '@mui/material/MenuItem'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import MultisenderABI from 'abi/muti.json'
-import { SettingsOutlined, Tune, Web } from '@mui/icons-material'
-import { data } from 'autoprefixer'
 import ERC20ABI from 'abi/erc20.json'
 import LoadingModal from 'components/LoadingModal'
 import { Link } from 'react-router-dom'
-import { async } from '@firebase/util'
-import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import { DappContext } from 'contexts/DappContext'
 
 const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background: #212121;
+  background: #333333;
   colour: white;
   font-family: sans-serif;
 `
@@ -42,6 +35,7 @@ const Body = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding-bottom: 20px;
 `
 const Text = styled.div`
   font-size: 18px;
@@ -54,9 +48,9 @@ const Text = styled.div`
 
 const Row = styled.div`
   display: flex;
-  width: 40%;
+  width: 57%;
   justify-content: space-around;
-  margin: 10px 0px;
+  margin: 10px 0 0 0;
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -84,10 +78,12 @@ const Index = () => {
   const [isConnected, setIsConnected] = useState(false)
   const [coinType, setCoinType] = React.useState('Native Coin')
   const [list, setList] = useState()
-  const [tokenAddress, setTokenAddress] = useState()
+  const [tokenAddress, setTokenAddress] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalContent, setModalContent] = useState('')
   const [txFee, setTxfee] = useState()
+  const [sendAmount, setSendAmount] = useState(0)
+  const [totalAmount, setTotalAmount] = useState(0)
   const [contractAddress, setContractAddress] = useState()
   const { networks, updateNetworks, setOpen, multiSendContract } = useContext(
     DappContext,
@@ -100,6 +96,7 @@ const Index = () => {
 
   useEffect(() => {
     async function getSymbol() {
+      setSymbol("");
       try {
         const ERC20Contract = new web3.eth.Contract(ERC20ABI.abi, tokenAddress)
         const symbol = await ERC20Contract.methods.symbol().call()
@@ -177,7 +174,30 @@ const Index = () => {
   }
 
   const changeDataList = (e) => {
+    let address_list = []
+    let value_list = []
     setInputData(e.target.value)
+    if (e.target.value === undefined) {
+      alert('Please input data.')
+    } else {
+      e.target.value.split('\n').map((row) => {
+        if (row !== undefined) {
+          let content = row.split(',')
+          if (web3.utils.isAddress(content[0]) && content[1] !== '') {
+            address_list.push(content[0])
+            value_list.push(parseFloat(content[1]))
+          }
+        }
+      })
+    }
+    const send_amount = value_list.reduce(
+      (total, current) => total + current,
+      0,
+    )
+    if (send_amount > 0) {
+      setSendAmount(send_amount)
+      setTotalAmount(send_amount+parseFloat(txFee))
+    }
   }
   const setRest = () => {
     setInputData('')
@@ -274,6 +294,8 @@ const Index = () => {
   }
 
   const handleChangeChain = async (e) => {
+    setSymbol("")
+    setTokenAddress("")
     switchChain(parseInt(e.target.value))
     setChainId(e.target.value)
   }
@@ -282,12 +304,21 @@ const Index = () => {
     <Container>
       <React.Fragment>
         <Header>
-          <div>MultiSendApp</div>
+          <div style={{ color:'blue' }}>MultiSendApp</div>
         </Header>
         <AdminButtonContainer>
           <Link to="/admin">... </Link>
         </AdminButtonContainer>
         <Body>
+          <Row>
+            <Text>
+              <div className='disclaimer'><b style={{fontSize: '20px'}}>Disclaimer:</b> This app and the associated smart contracts have not been independently audited by a 3rd party. 
+                Users of this app and associated contracts do so at their own risk. 
+                Due to gas limitations on EVM networks (e.g. Ethereum), the number of addresses you can send to in any single transaction may be limited. 
+                This tool has been successfully tested sending to 100 addresses in a single transaction. 
+                If you intend to send to more addresses than this, please consider breaking the transactions into small sets or perform a test transaction first.</div>
+            </Text>
+          </Row>
           <Button
             onClick={connectWallet}
             variant="contained"
@@ -302,9 +333,18 @@ const Index = () => {
           <Text>
             <div> Current Contract Address: {contractAddress}</div>
           </Text>
-          <Text>
-            <div> Current Fee Being Charged : {txFee}</div>
-          </Text>
+          <Row>
+            <Text>
+              <div>Current Send Amount : {sendAmount}</div>
+            </Text>
+            <Text>
+              <div> Current Fee Being Charged : {txFee}</div>
+            </Text>
+            <Text>
+              <div> Current Total Amount : {totalAmount}</div>
+            </Text>
+          </Row>
+          
 
           {/* <Text>Balance: {balance} Ether</Text> */}
           <Row>
@@ -319,22 +359,26 @@ const Index = () => {
             </Select>
             <TextField
               label="Token Address"
-              variant="outlined"
               style={{ width: '50%' }}
+              value={tokenAddress}
               disabled={coinType === 'Native Coin' ? true : false}
               onChange={getTokenAddress}
             />
+            {coinType !== 'Native Coin' && symbol ? (
+              <Text style={{ margin: '18px 0px' }}>
+                <div> Token Name : {symbol}</div>
+              </Text>
+            ) : (
+              ''
+            )}
           </Row>
 
-          <FormControl>
-            <InputLabel id="demo-simple-select-label">Select Chain</InputLabel>
+          <FormControl style={{marginTop: '10px'}}>
             <Select
-              labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={network}
               onChange={handleChangeChain}
               autoWidth={true}
-              label="Select Chain"
             >
               {Object.values(networks).map((net, index) => {
                 return (
@@ -345,22 +389,19 @@ const Index = () => {
               })}
             </Select>
           </FormControl>
-          {coinType !== 'Native Coin' && symbol ? (
-            <Text>
-              <div> Token Name : {symbol}</div>
-            </Text>
-          ) : (
-            ''
-          )}
+
+          <Text style={{ margin: '15px 0 0 0' }}>
+            Format: 0xf2c7bEa00ebB87B5b26140dd4ceB46a5d5D435B4, 0.01
+          </Text>
 
           <Text style={{ margin: '10px 0px' }}>
-            Format: 0xf2c7bEa00ebB87B5b26140dd4ceB46a5d5D435B4, 0.01
+            Format: 0xf2c7bEa00ebB87B5b26140dd4ceB46a5d5D435B4,0.01
           </Text>
 
           <textarea
             placeholder="address amount"
             style={{ width: '45%', fontSize: '14px' }}
-            rows={10}
+            rows={8}
             onChange={changeDataList}
             multiline
             value={inputData}

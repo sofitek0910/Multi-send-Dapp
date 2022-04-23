@@ -26,7 +26,7 @@ export default function SuccessModal({action,show}) {
       >
         <Box sx={style}>
           <div style={{display:'flex',justifyContent:'center',alignItems:'center',marginBottom:'20px',width:'100%',height:'100%',flexDirection:'column',padding:"20px 0px"}}>
-            Added new Chain successfully.
+            Updated new Chain successfully.
             <div style={{display:'flex',flexDirection:'row',justifyContent:'space-around',width:'100%',marginTop:'20px'}}>
               <Button onClick={() => action()}  variant="contained"> Confirm </Button>
             </div>

@@ -18,41 +18,46 @@ const style = {
   borderRadius: 2,
 }
 
-export default function AddChainModal() {
+export default function EdithainModal() {
+  const {selectedNetwork, setUpdated,} = React.useContext(DappContext)
   const [netInfo, setNetInfo] = React.useState({})
   const [netName,setNetName] = React.useState('');
-  const { open, setOpen } = React.useContext(DappContext)
-  const handleClose = () => setOpen(false)
+  const { editShow, setEditShow } = React.useContext(DappContext)
+  const handleClose = () => setEditShow(false)
   const {updateNetworks, setAdded} = React.useContext(DappContext)
 
-  const AddChain = () => {
+  React.useEffect(() => {
+    let network = selectedNetwork;
+    setNetInfo(network)
+  }, [selectedNetwork])
+
+  const EditChain = () => {
     set(ref(db,'/networks/' + netInfo.chainId), {
-        name : netName, 
+        name : netInfo.name, 
         chainId : netInfo.chainId, 
         rpc : netInfo.rpc, 
-        contractAddress : netInfo.address,
+        contractAddress : netInfo.contractAddress,
         symbol: netInfo.symbol
     }).then(
         ()=> {
           updateNetworks();
-          setAdded(true);
+          setUpdated(true);
         }
     )
-    setOpen(false)
-  }
-
-  const handleSetName = (e) =>{
-    setNetName(e.target.value);
+    setEditShow(false)
   }
 
   const handleChange = (e,key) =>{
-    setNetInfo(Object.assign(netInfo,{[key]:e.target.value}))
+    setNetInfo(prevState => ({
+        ...prevState,
+        [key]: e.target.value
+    }))
   }
 
   return (
     <div>
       <Modal
-        open={open}
+        open={editShow}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -73,21 +78,27 @@ export default function AddChainModal() {
               id="standard-basic"
               label="Chain Name"
               variant="standard"
+              value={netInfo.name}
               style={{ width: '80%' }}
-              onChange = {(e) =>handleSetName(e)}
+              name="name"
+              onChange = {(e) =>handleChange(e, 'name')}
             />
             <TextField
               id="standard-basic"
               label="Chain id"
               variant="standard"
+              value={netInfo.chainId}
               style={{ width: '80%' }}
+              name="chainId"
               onChange = {(e) => handleChange(e,'chainId')}
             />
             <TextField
               id="standard-basic"
               label="Contract Address"
               variant="standard"
+              value={netInfo.contractAddress}
               style={{ width: '80%' }}
+              name="contractAddress"
               onChange = {(e) =>handleChange(e,'address')}
             />
 
@@ -95,7 +106,9 @@ export default function AddChainModal() {
               id="standard-basic"
               label="Symbol"
               variant="standard"
+              value={netInfo.symbol}
               style={{ width: '80%' }}
+              name="symbol"
               onChange = {(e) =>handleChange(e,'symbol')}
             />
 
@@ -103,7 +116,9 @@ export default function AddChainModal() {
               id="standard-basic"
               label="RPC Endpoint"
               variant="standard"
+              value={netInfo.rpc}
               style={{ width: '80%' }}
+              name="rpc"
               onChange = {(e) =>handleChange(e,'rpc')}
             />
 
@@ -116,7 +131,7 @@ export default function AddChainModal() {
                 justifyContent: 'space-around',
               }}
             >
-              <Button onClick={AddChain}>Add</Button>
+              <Button onClick={EditChain}>Update</Button>
               <Button onClick={handleClose}>Cancel</Button>
             </div>
           </div>

@@ -2,3 +2,21 @@ body {
     margin: 0px;
     padding: 0px;
 }
+
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select {
+    background-color: #fff;
+    /* box-shadow: 0 -5px #fff; */
+}
+
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+    background-color: #fff!important;
+}
+
+.disclaimer {
+    color: yellow;
+}
+
+input {
+    font-size: 18px;
+    padding: 13px 10px;
+}
