@@ -1,6 +1,11 @@
 body {
     margin: 0px;
     padding: 0px;
+    background-color: #000;
+}
+
+.content {
+    margin: 0 25px;
 }
 
 .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select {

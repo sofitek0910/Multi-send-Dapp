@@ -53,10 +53,13 @@ const Text = styled.div`
 `
 const Row = styled.div`
   display: flex;
-  width: 40%;
+  width: 52%;
   justify-content: space-around;
   align-items: center;
   margin: 10px 0px;
+  @media (max-width: 1050px) {
+    width: 70%;
+  }
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -215,92 +218,94 @@ const Admin = () => {
         <div>MultiSendApp</div>
         <div style={{fontSize: '16px', marginTop: '20px'}}>Admin Panel</div>
       </Header>
-      <Link style={{color: '#fff'}} to="/">Go to Sending Page</Link>
-      <Body>
-        <Button
-          onClick={connectWallet}
-          variant="contained"
-          style={{ margin: '10px 0px' }}
-          color={isConnected ? 'error' : 'primary'}
-        >
-          {isConnected ? 'WALLET CONNECTED' : 'CONNECT WALLET'}
-        </Button>
-        <Text>
-          <div>Address: {address}</div>
-        </Text>
-        <Row>
-        <FormControl>
-            {networks != null?
-              <Select
-                style={{backgroundColor: "#fff"}}
-                id="net"
-                value={network}
-                onChange={handleChangeChain}
-                autoWidth={true}
-              >
-                {Object.values(networks).map((net, index) => {
-                  return (
-                    <MenuItem value={net.chainId} key={index}>
-                      {net.name} 
-                      <Button onClick = {(e) => removeChain(e,net.chainId)}><Delete /></Button>
-                      <Button onClick = {(e) => editChain(e,net.chainId)}><EditIcon /></Button>
-                    </MenuItem>
-                  )
-                })}
-              </Select>:
-              <Select>
-                <MenuItem value="No chain">No Chain</MenuItem>
-              </Select>
-            }
-          </FormControl>
-          <Button style={{backgroundColor: 'orange'}} variant="contained" onClick={handleNetAdd}>
-            Add NetWork
+      <div className='content'>
+        <Link style={{color: '#fff'}} to="/">Go to Sending Page</Link>
+        <Body>
+          <Button
+            onClick={connectWallet}
+            variant="contained"
+            style={{ margin: '10px 0px' }}
+            className={ isConnected ? 'connected-wallet': 'unconnected-wallet' }
+          >
+            {isConnected ? 'WALLET CONNECTED' : 'CONNECT WALLET'}
           </Button>
-        </Row>
-        <div style={{color:'red'}}>You have to be owner of the contract</div>
-        <Row>
-          <div style={{color: '#fff'}}> Owner Address: {contractOwner}</div>
-        </Row>
-        <Row>
-          <div style={{color: '#fff'}}> Owner Address:</div>
-          <input
-            label="Owner Address"
-            variant="outlined"
-            style={{ width: '50%' }}
-            onChange={getOwnerAddress}
-          />
-        </Row>
-        <Row>
-          <div style={{color: '#fff'}}> Fee Address:</div>
-          <input
-            label="Fee Address"
-            variant="outlined"
-            style={{ width: '50%' }}
-            onChange={getFeeAddress}
-          />
-        </Row>
-        <Row>
-          <div style={{color: '#fff'}}> Fee amount:</div>
-          <input
-            label="Fee amount"
-            variant="outlined"
-            style={{ width: '50%' }}
-            onChange={getFee}
-          />
-        </Row>
+          <Text>
+            <div>Address: {address}</div>
+          </Text>
+          <Row>
+          <FormControl>
+              {networks != null?
+                <Select
+                  style={{backgroundColor: "#fff"}}
+                  id="net"
+                  value={network}
+                  onChange={handleChangeChain}
+                  autoWidth={true}
+                >
+                  {Object.values(networks).map((net, index) => {
+                    return (
+                      <MenuItem value={net.chainId} key={index}>
+                        {net.name} 
+                        <Button onClick = {(e) => removeChain(e,net.chainId)}><Delete /></Button>
+                        <Button onClick = {(e) => editChain(e,net.chainId)}><EditIcon /></Button>
+                      </MenuItem>
+                    )
+                  })}
+                </Select>:
+                <Select>
+                  <MenuItem value="No chain">No Chain</MenuItem>
+                </Select>
+              }
+            </FormControl>
+            <Button style={{backgroundColor: '#cfa144'}} variant="contained" onClick={handleNetAdd}>
+              Add NetWork
+            </Button>
+          </Row>
+          <div style={{color:'red'}}>You have to be owner of the contract</div>
+          <Row>
+            <div style={{color: '#fff'}}> Owner Address: {contractOwner}</div>
+          </Row>
+          <Row>
+            <div style={{color: '#fff'}}> Owner Address:</div>
+            <input
+              label="Owner Address"
+              variant="outlined"
+              style={{ width: '50%' }}
+              onChange={getOwnerAddress}
+            />
+          </Row>
+          <Row>
+            <div style={{color: '#fff'}}> Fee Address:</div>
+            <input
+              label="Fee Address"
+              variant="outlined"
+              style={{ width: '50%' }}
+              onChange={getFeeAddress}
+            />
+          </Row>
+          <Row>
+            <div style={{color: '#fff'}}> Fee amount:</div>
+            <input
+              label="Fee amount"
+              variant="outlined"
+              style={{ width: '50%' }}
+              onChange={getFee}
+            />
+          </Row>
 
-        <Row>
-          <Button style={{backgroundColor: '#cfa144'}} variant="contained" onClick={changeOwner}>
-            Change Owner
-          </Button>
-          <Button style={{backgroundColor: '#cfa144'}} variant="contained" onClick={changeFeeAddress}>
-            Change Free Address
-          </Button>
-          <Button style={{backgroundColor: '#cfa144'}}  variant="contained" onClick={changeFee}>
-            Change Fee
-          </Button>
-        </Row>
-      </Body>
+          <Row>
+            <Button style={{backgroundColor: '#cfa144'}} variant="contained" onClick={changeOwner}>
+              Change Owner
+            </Button>
+            <Button style={{backgroundColor: '#cfa144'}} variant="contained" onClick={changeFeeAddress}>
+              Change Fee Address
+            </Button>
+            <Button style={{backgroundColor: '#cfa144'}}  variant="contained" onClick={changeFee}>
+              Change Fee
+            </Button>
+          </Row>
+        </Body>
+      </div>
       <LoadingModal isloading={isSending} content="Setting" />
       <AddChainModal/>
       <EditChainModal/>

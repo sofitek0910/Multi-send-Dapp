@@ -15,6 +15,7 @@ import { DappContext } from 'contexts/DappContext'
 
 const Container = styled.div`
   background: #000;
+  height: 100vh;
   colour: white;
   font-family: sans-serif;
 `
@@ -50,6 +51,9 @@ const Row = styled.div`
   width: 57%;
   justify-content: space-between;
   margin: 10px 0 0 0;
+  @media (max-width: 1100px) {
+    width: 75%;
+  }
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -114,6 +118,7 @@ const Index = () => {
 
   const handleChange = (e) => {
     setCoinType(e.target.value)
+    setTokenAddress("")
   }
 
   useEffect(() => {
@@ -296,7 +301,6 @@ const Index = () => {
 
   const handleChangeChain = async (e) => {
     setSymbol("")
-    setTokenAddress("")
     switchChain(parseInt(e.target.value))
     setChainId(e.target.value)
   }
@@ -308,126 +312,130 @@ const Index = () => {
           <div>MultiSendApp</div>
           <div style={{fontSize: '16px', marginTop: '20px'}}>Send to multiple EVM compatible addresses<br/>in a single transaction!</div>
         </Header>
-        <AdminButtonContainer>
-          <Link to="/admin">... </Link>
-        </AdminButtonContainer>
-        <Body>
-          <Button
-            onClick={connectWallet}
-            variant="contained"
-            style={{ margin: '10px 0px' }}
-            className={ isConnected ? 'connected-wallet': 'unconnected-wallet' }
-            color={isConnected ? 'error' : 'primary'}
-          >
-            {isConnected ? 'WALLET CONNECTED' : 'CONNECT WALLET'}
-          </Button>
-          <Text>
-            <div>Your Wallet Address: {address}</div>
-          </Text>
-          <Text>
-            <div> Current Contract Address: {contractAddress}</div>
-          </Text>
-          <Row>
-            <Text>
-              <div> Amount to Send : {sendAmount}</div>
-            </Text>
-            <Text>
-              <div> Fee to Send : {txFee} {coinSymbol}</div>
-            </Text>
-          </Row>
-          <Row>
-            <Text>
-              <div className='disclaimer'>Disclaimer: This app and the associated smart contracts have not been independently audited by a 3rd party. 
-                Users of this app and associated contracts do so at their own risk. 
-                Due to gas limitations on EVM networks (e.g. Ethereum), the number of addresses you can send to in any single transaction may be limited. 
-                This tool has been successfully tested sending to 100 addresses in a single transaction. 
-                If you intend to send to more addresses than this, please consider breaking the transactions into small sets or perform a test transaction first.</div>
-            </Text>
-          </Row>
-
-          {/* <Text>Balance: {balance} Ether</Text> */}
-          <Row>
-            <Select
-              style={{backgroundColor: "#fff"}}
-              value={coinType}
-              onChange={handleChange}
-              defaultValue={coinType}
-              autoWidth={true}
+        <div className='content'>
+          <AdminButtonContainer>
+            <Link to="/admin">... </Link>
+          </AdminButtonContainer>
+          <Body>
+            <Button
+              onClick={connectWallet}
+              variant="contained"
+              style={{ margin: '10px 0px' }}
+              className={ isConnected ? 'connected-wallet': 'unconnected-wallet' }
+              color={isConnected ? 'error' : 'primary'}
             >
-              <MenuItem value={'Native Coin'}>Native Coin</MenuItem>
-              <MenuItem value={'Custom token'}>Custom token</MenuItem>
-            </Select>
-            <input
-              label="Token Address"
-              style={{ width: '50%', backgroundColor: "#fff" }}
-              value={tokenAddress}
-              disabled={coinType === 'Native Coin' ? true : false}
-              onChange={getTokenAddress}
-            />
-            {coinType !== 'Native Coin' && symbol ? (
-              <Text style={{ margin: '18px 0px', color: '#cfa144', fontWeight: 'bold' }}>
-                <div> {symbol}</div>
-              </Text>
-            ) : (
-              ''
-            )}
-          </Row>
-
-          <FormControl style={{marginTop: '10px'}}>
-            <Select
-              style={{backgroundColor: "#fff"}}
-              id="demo-simple-select"
-              value={network}
-              onChange={handleChangeChain}
-              autoWidth={true}
-            >
-              {Object.values(networks).map((net, index) => {
-                return (
-                  <MenuItem value={net.chainId} key={index}>
-                    {net.name}
-                  </MenuItem>
-                )
-              })}
-            </Select>
-          </FormControl>
-
-          <Text style={{ margin: '15px 0 0 0' }}>
-            Format: 0xf2c7bEa00ebB87B5b26140dd4ceB46a5d5D435B4, 0.01
-          </Text>
-
-          <Text style={{ margin: '10px 0px' }}>
-            Format: 0xf2c7bEa00ebB87B5b26140dd4ceB46a5d5D435B4,0.01
-          </Text>
-
-          <textarea
-            placeholder="address amount"
-            style={{ width: '45%', fontSize: '14px' }}
-            rows={8}
-            onChange={changeDataList}
-            multiline
-            value={inputData}
-          />
-
-          <div className='button-group'>
-            <Button style={{ backgroundColor:'#008000', marginRight: '25px' }} variant="contained" onClick={send}>
-              SEND
+              {isConnected ? 'WALLET CONNECTED' : 'CONNECT WALLET'}
             </Button>
+            <Text>
+              <div>Your Wallet Address: {address}</div>
+            </Text>
+            <Text>
+              <div> Current Contract Address: {contractAddress}</div>
+            </Text>
+            <Row>
+              <Text>
+                <div> Amount to Send : {sendAmount} {coinSymbol}</div>
+              </Text>
+              <Text>
+                <div> Fee to Send : {txFee} {coinSymbol}</div>
+              </Text>
+            </Row>
+            <Row>
+              <Text>
+                <div className='disclaimer'>Disclaimer: This app and the associated smart contracts have not been independently audited by a 3rd party. 
+                  Users of this app and associated contracts do so at their own risk. 
+                  Due to gas limitations on EVM networks (e.g. Ethereum), the number of addresses you can send to in any single transaction may be limited. 
+                  This tool has been successfully tested sending to 100 addresses in a single transaction. 
+                  If you intend to send to more addresses than this, please consider breaking the transactions into small sets or perform a test transaction first.</div>
+              </Text>
+            </Row>
 
-            <React.Fragment>
-              <label htmlFor="fileUpload">
-                <UploadButton>Upload CSV file</UploadButton>
-              </label>
-              <input
-                id="fileUpload"
-                type="file"
-                multiple="multiple"
-                accept=".txt, .csv, .xls, .xlsx"
-                style={{ display: 'none' }}
-                onChange={(e) => getFile(e)}
-              />
-            </React.Fragment>
-          </div>
-        </Body>
+            {/* <Text>Balance: {balance} Ether</Text> */}
+            <Row>
+              <Select
+                style={{backgroundColor: "#fff"}}
+                value={coinType}
+                onChange={handleChange}
+                defaultValue={coinType}
+                autoWidth={true}
+              >
+                <MenuItem value={'Native Coin'}>Native Coin</MenuItem>
+                <MenuItem value={'Custom token'}>Custom token</MenuItem>
+              </Select>
+              <div style={{display: 'flex', justifyContent:'flex-start'}}>
+                <input
+                  label="enter token contract address"
+                  style={{ width: '100%', backgroundColor: "#fff" }}
+                  value={tokenAddress}
+                  disabled={coinType === 'Native Coin' ? true : false}
+                  onChange={getTokenAddress}
+                />
+                {coinType !== 'Native Coin' && symbol ? (
+                  <Text style={{ margin: '18px 5px', color: '#cfa144', fontWeight: 'bold' }}>
+                    <div> {symbol}</div>
+                  </Text>
+                ) : (
+                  ''
+                )}
+              </div>
+            </Row>
+
+            <FormControl style={{marginTop: '10px'}}>
+              <Select
+                style={{backgroundColor: "#fff"}}
+                id="demo-simple-select"
+                value={network}
+                onChange={handleChangeChain}
+                autoWidth={true}
+              >
+                {Object.values(networks).map((net, index) => {
+                  return (
+                    <MenuItem value={net.chainId} key={index}>
+                      {net.name}
+                    </MenuItem>
+                  )
+                })}
+              </Select>
+            </FormControl>
+
+            <Text style={{ margin: '15px 0 0 0' }}>
+              Format: 0xf2c7bEa00ebB87B5b26140dd4ceB46a5d5D435B4, 0.01
+            </Text>
+
+            <Text style={{ margin: '10px 0px' }}>
+              Format: 0xf2c7bEa00ebB87B5b26140dd4ceB46a5d5D435B4,0.01
+            </Text>
+
+            <textarea
+              placeholder="address amount"
+              style={{ width: '45%', fontSize: '14px' }}
+              rows={8}
+              onChange={changeDataList}
+              multiline
+              value={inputData}
+            />
+
+            <div className='button-group'>
+              <Button style={{ backgroundColor:'#008000', marginRight: '25px' }} variant="contained" onClick={send}>
+                SEND
+              </Button>
+
+              <React.Fragment>
+                <label htmlFor="fileUpload">
+                  <UploadButton>Upload CSV file</UploadButton>
+                </label>
+                <input
+                  id="fileUpload"
+                  type="file"
+                  multiple="multiple"
+                  accept=".txt, .csv, .xls, .xlsx"
+                  style={{ display: 'none' }}
+                  onChange={(e) => getFile(e)}
+                />
+              </React.Fragment>
+            </div>
+          </Body>
+        </div>
       </React.Fragment>
       <LoadingModal isloading={isModalOpen} content={modalContent} />
     </Container>
