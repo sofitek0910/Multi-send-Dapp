@@ -23,18 +23,17 @@ import ChangeSuccessModal from 'components/ChangeSuccessModal'
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
-  background: #333333;
+  background: #000;
   colour: white;
   font-family: sans-serif;
 `
 const Header = styled.div`
   width: 100%;
-  display: flex;
-  justify-content: center;
-  background: #000;
-  padding: 10px 0px;
+  text-align: center;
+  background: #212121;
+  padding: 20px 0px;
   color: white;
-  font-size: 28px;
+  font-size: 45px;
   font-weight: 600;
 `
 
@@ -213,7 +212,8 @@ const Admin = () => {
   return (
     <Container>
       <Header>
-        <div>Muti Sender Admin</div>
+        <div>MultiSendApp</div>
+        <div style={{fontSize: '16px', marginTop: '20px'}}>Admin Panel</div>
       </Header>
       <Link style={{color: '#fff'}} to="/">Go to Sending Page</Link>
       <Body>
@@ -253,7 +253,7 @@ const Admin = () => {
               </Select>
             }
           </FormControl>
-          <Button style={{backgroundColor: 'purple'}} variant="contained" onClick={handleNetAdd}>
+          <Button style={{backgroundColor: 'orange'}} variant="contained" onClick={handleNetAdd}>
             Add NetWork
           </Button>
         </Row>
@@ -290,13 +290,13 @@ const Admin = () => {
         </Row>
 
         <Row>
-          <Button style={{backgroundColor: 'green'}} variant="contained" onClick={changeOwner}>
+          <Button style={{backgroundColor: '#cfa144'}} variant="contained" onClick={changeOwner}>
             Change Owner
           </Button>
-          <Button variant="contained" onClick={changeFeeAddress}>
+          <Button style={{backgroundColor: '#cfa144'}} variant="contained" onClick={changeFeeAddress}>
             Change Free Address
           </Button>
-          <Button style={{backgroundColor: 'orange'}}  variant="contained" onClick={changeFee}>
+          <Button style={{backgroundColor: '#cfa144'}}  variant="contained" onClick={changeFee}>
             Change Fee
           </Button>
         </Row>

@@ -13,10 +13,21 @@ body {
 }
 
 .disclaimer {
-    color: yellow;
+    color: #cfa144;
 }
 
 input {
     font-size: 18px;
     padding: 13px 10px;
+}
+
+.connected-wallet {
+    background-color: #cfa144!important;
+}
+
+.button-group {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center!important;
 }

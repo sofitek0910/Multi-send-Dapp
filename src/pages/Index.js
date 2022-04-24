@@ -14,18 +14,17 @@ import FormControl from '@mui/material/FormControl'
 import { DappContext } from 'contexts/DappContext'
 
 const Container = styled.div`
-  background: #333333;
+  background: #000;
   colour: white;
   font-family: sans-serif;
 `
 const Header = styled.div`
   width: 100%;
-  display: flex;
-  justify-content: center;
-  background: black;
-  padding: 10px 0px;
+  text-align: center;
+  background: #212121;
+  padding: 20px 0px;
   color: white;
-  font-size: 28px;
+  font-size: 45px;
   font-weight: 600;
 `
 
@@ -49,7 +48,7 @@ const Text = styled.div`
 const Row = styled.div`
   display: flex;
   width: 57%;
-  justify-content: space-around;
+  justify-content: space-between;
   margin: 10px 0 0 0;
   @media (max-width: 768px) {
     width: 100%;
@@ -58,7 +57,7 @@ const Row = styled.div`
 
 const UploadButton = styled.div`
   color: white;
-  background: #ffa319;
+  background: #cfa144;
   padding: 10px;
   border-radius: 4px;
   width: fit-content;
@@ -85,6 +84,7 @@ const Index = () => {
   const [sendAmount, setSendAmount] = useState(0)
   const [totalAmount, setTotalAmount] = useState(0)
   const [contractAddress, setContractAddress] = useState()
+  const [coinSymbol, setCoinSymbol] = useState()
   const { networks, updateNetworks, setOpen, multiSendContract } = useContext(
     DappContext,
   )
@@ -124,6 +124,7 @@ const Index = () => {
         const fee = web3.utils.fromWei(_fee, 'ether')
         const _contractAddress = networks[providerChainId].contractAddress
         setContractAddress(_contractAddress)
+        setCoinSymbol(networks[providerChainId].symbol)
         setTxfee(fee)
       } catch (err) {}
     }
@@ -304,25 +305,18 @@ const Index = () => {
     <Container>
       <React.Fragment>
         <Header>
-          <div style={{ color:'blue' }}>MultiSendApp</div>
+          <div>MultiSendApp</div>
+          <div style={{fontSize: '16px', marginTop: '20px'}}>Send to multiple EVM compatible addresses<br/>in a single transaction!</div>
         </Header>
         <AdminButtonContainer>
           <Link to="/admin">... </Link>
         </AdminButtonContainer>
         <Body>
-          <Row>
-            <Text>
-              <div className='disclaimer'><b style={{fontSize: '20px'}}>Disclaimer:</b> This app and the associated smart contracts have not been independently audited by a 3rd party. 
-                Users of this app and associated contracts do so at their own risk. 
-                Due to gas limitations on EVM networks (e.g. Ethereum), the number of addresses you can send to in any single transaction may be limited. 
-                This tool has been successfully tested sending to 100 addresses in a single transaction. 
-                If you intend to send to more addresses than this, please consider breaking the transactions into small sets or perform a test transaction first.</div>
-            </Text>
-          </Row>
           <Button
             onClick={connectWallet}
             variant="contained"
             style={{ margin: '10px 0px' }}
+            className={ isConnected ? 'connected-wallet': 'unconnected-wallet' }
             color={isConnected ? 'error' : 'primary'}
           >
             {isConnected ? 'WALLET CONNECTED' : 'CONNECT WALLET'}
@@ -335,16 +329,21 @@ const Index = () => {
           </Text>
           <Row>
             <Text>
-              <div>Current Send Amount : {sendAmount}</div>
+              <div> Amount to Send : {sendAmount}</div>
             </Text>
             <Text>
-              <div> Current Fee Being Charged : {txFee}</div>
-            </Text>
-            <Text>
-              <div> Current Total Amount : {totalAmount}</div>
+              <div> Fee to Send : {txFee} {coinSymbol}</div>
             </Text>
           </Row>
-          
+          <Row>
+            <Text>
+              <div className='disclaimer'>Disclaimer: This app and the associated smart contracts have not been independently audited by a 3rd party. 
+                Users of this app and associated contracts do so at their own risk. 
+                Due to gas limitations on EVM networks (e.g. Ethereum), the number of addresses you can send to in any single transaction may be limited. 
+                This tool has been successfully tested sending to 100 addresses in a single transaction. 
+                If you intend to send to more addresses than this, please consider breaking the transactions into small sets or perform a test transaction first.</div>
+            </Text>
+          </Row>
 
           {/* <Text>Balance: {balance} Ether</Text> */}
           <Row>
@@ -358,7 +357,7 @@ const Index = () => {
               <MenuItem value={'Native Coin'}>Native Coin</MenuItem>
               <MenuItem value={'Custom token'}>Custom token</MenuItem>
             </Select>
-            <TextField
+            <input
               label="Token Address"
               style={{ width: '50%', backgroundColor: "#fff" }}
               value={tokenAddress}
@@ -366,8 +365,8 @@ const Index = () => {
               onChange={getTokenAddress}
             />
             {coinType !== 'Native Coin' && symbol ? (
-              <Text style={{ margin: '18px 0px' }}>
-                <div> Token Name : {symbol}</div>
+              <Text style={{ margin: '18px 0px', color: '#cfa144', fontWeight: 'bold' }}>
+                <div> {symbol}</div>
               </Text>
             ) : (
               ''
@@ -409,8 +408,8 @@ const Index = () => {
             value={inputData}
           />
 
-          <Row>
-            <Button variant="contained" onClick={send}>
+          <div className='button-group'>
+            <Button style={{ backgroundColor:'#008000', marginRight: '25px' }} variant="contained" onClick={send}>
               SEND
             </Button>
 
@@ -427,7 +426,7 @@ const Index = () => {
                 onChange={(e) => getFile(e)}
               />
             </React.Fragment>
-          </Row>
+          </div>
         </Body>
       </React.Fragment>
       <LoadingModal isloading={isModalOpen} content={modalContent} />
