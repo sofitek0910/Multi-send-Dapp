@@ -94,7 +94,7 @@ const Index = () => {
   )
   const [chainId, setChainId] = useState(3)
   const [inputData, setInputData] = useState()
-  const [symbol, setSymbol] = useState()
+  const [symbol, setSymbol] = useState('')
   const { connectWeb3, providerChainId, account } = useContext(Web3Context)
   const switchChain = useSwitchChain()
 
@@ -119,6 +119,7 @@ const Index = () => {
   const handleChange = (e) => {
     setCoinType(e.target.value)
     setTokenAddress("")
+    setSymbol("")
   }
 
   useEffect(() => {
@@ -335,7 +336,7 @@ const Index = () => {
             </Text>
             <Row>
               <Text>
-                <div> Amount to Send : {sendAmount} {coinSymbol !== 'coinSymbol' ? symbol: coinSymbol}</div>
+                <div> Amount to Send : {sendAmount} {symbol != '' ? symbol: coinSymbol}</div>
               </Text>
               <Text>
                 <div> Fee to Send : {txFee} {coinSymbol}</div>
