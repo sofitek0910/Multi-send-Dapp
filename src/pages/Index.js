@@ -84,7 +84,7 @@ const Index = () => {
   const [tokenAddress, setTokenAddress] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalContent, setModalContent] = useState('')
-  const [txFee, setTxfee] = useState()
+  const [txFee, setTxfee] = useState(0)
   const [sendAmount, setSendAmount] = useState(0)
   const [totalAmount, setTotalAmount] = useState(0)
   const [contractAddress, setContractAddress] = useState()
@@ -301,6 +301,7 @@ const Index = () => {
 
   const handleChangeChain = async (e) => {
     setSymbol("")
+    setTokenAddress("")
     switchChain(parseInt(e.target.value))
     setChainId(e.target.value)
   }
@@ -334,7 +335,7 @@ const Index = () => {
             </Text>
             <Row>
               <Text>
-                <div> Amount to Send : {sendAmount} {coinSymbol}</div>
+                <div> Amount to Send : {sendAmount} {coinSymbol !== 'coinSymbol' ? symbol: coinSymbol}</div>
               </Text>
               <Text>
                 <div> Fee to Send : {txFee} {coinSymbol}</div>
@@ -362,10 +363,10 @@ const Index = () => {
                 <MenuItem value={'Native Coin'}>Native Coin</MenuItem>
                 <MenuItem value={'Custom token'}>Custom token</MenuItem>
               </Select>
-              <div style={{display: 'flex', justifyContent:'flex-start'}}>
+              <div style={{display: 'flex', justifyContent:'flex-start', width: '70%'}}>
                 <input
-                  label="enter token contract address"
-                  style={{ width: '100%', backgroundColor: "#fff" }}
+                  placeholder={coinType === 'Native Coin' ? "": "enter token contract address"}
+                  style={{ width: '150%', backgroundColor: "#fff" }}
                   value={tokenAddress}
                   disabled={coinType === 'Native Coin' ? true : false}
                   onChange={getTokenAddress}
