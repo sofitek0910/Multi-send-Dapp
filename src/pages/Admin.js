@@ -246,8 +246,8 @@ const Admin = () => {
                     return (
                       <MenuItem value={net.chainId} key={index}>
                         {net.name} 
-                        <Button onClick = {(e) => removeChain(e,net.chainId)}><Delete /></Button>
-                        <Button onClick = {(e) => editChain(e,net.chainId)}><EditIcon /></Button>
+                        <Button className='admin-button' onClick = {(e) => removeChain(e,net.chainId)}><Delete /></Button>
+                        <Button className='admin-button' onClick = {(e) => editChain(e,net.chainId)}><EditIcon /></Button>
                       </MenuItem>
                     )
                   })}
@@ -257,9 +257,9 @@ const Admin = () => {
                 </Select>
               }
             </FormControl>
-            <Button style={{backgroundColor: '#cfa144'}} variant="contained" onClick={handleNetAdd}>
+            <button className='admin-button' style={{backgroundColor: '#cfa144'}} variant="contained" onClick={handleNetAdd}>
               Add NetWork
-            </Button>
+            </button>
           </Row>
           <div style={{color:'red'}}>You have to be owner of the contract</div>
           <Row>
@@ -292,17 +292,16 @@ const Admin = () => {
               onChange={getFee}
             />
           </Row>
-
           <Row>
-            <Button style={{backgroundColor: '#cfa144'}} variant="contained" onClick={changeOwner}>
+            <button className='admin-button' style={{backgroundColor: '#cfa144'}} variant="contained" onClick={changeOwner}>
               Change Owner
-            </Button>
-            <Button style={{backgroundColor: '#cfa144'}} variant="contained" onClick={changeFeeAddress}>
+            </button>
+            <button className='admin-button' style={{backgroundColor: '#cfa144'}} variant="contained" onClick={changeFeeAddress}>
               Change Fee Address
-            </Button>
-            <Button style={{backgroundColor: '#cfa144'}}  variant="contained" onClick={changeFee}>
+            </button>
+            <button className='admin-button' style={{backgroundColor: '#cfa144'}}  variant="contained" onClick={changeFee}>
               Change Fee
-            </Button>
+            </button>
           </Row>
         </Body>
       </div>

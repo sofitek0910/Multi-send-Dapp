@@ -36,3 +36,16 @@ input {
     flex-direction: row;
     justify-content: center!important;
 }
+
+.admin-button {
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 16px!important;   
+}
+
+@media (max-width: 560px) {
+    .admin-button {
+        font-size: 2.5vw!important;   
+    }
+}
+
