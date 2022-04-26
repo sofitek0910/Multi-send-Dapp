@@ -4,7 +4,7 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { DappContextProvider } from 'contexts/DappContext'
 import { Web3Provider } from 'contexts/Web3Context'
-import './index.css'
+import './index.css' 
 
 const container = document.getElementById('root')
 const root = createRoot(container)
